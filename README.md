@@ -32,3 +32,12 @@ Running the Project
 To run the application, follow these steps:
 
     poetry run python filename.py
+
+### 3. Add your own API keys from hugging face and OpenAI
+Make a copy of the file .env_example and rename it to .env
+Paste in your API keys.
+
+### 4. Download the hugging face API
+Run this command to download the scienceqa dataset to your local machine.
+Run
+    poetry run python dataset_functions.py

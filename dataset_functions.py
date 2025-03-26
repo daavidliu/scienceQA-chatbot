@@ -3,6 +3,7 @@ import os
 from dotenv import load_dotenv
 from datasets import load_dataset, Dataset
 import time
+import threading
 
 # Load environment variables from .env file
 load_dotenv()
@@ -55,8 +56,7 @@ def dataset_from_disk(arrow_file_path="science_qa/test/data-00000-of-00001.arrow
 
 
 if __name__ == "__main__":
-    
-    data = dataset_from_disk()
+    download_dataset()
     
     
     
