@@ -1,0 +1,11 @@
+# Ignore virtual environment directory
+.venv/
+
+# Ignore __pycache__ folders
+__pycache__/
+
+# Ignore .env file as it contains sensitive information
+.env
+
+# macOS-specific system files
+.DS_Store

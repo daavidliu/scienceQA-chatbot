@@ -1,0 +1,24 @@
+[project]
+name = "scienceqa-chatbot"
+version = "0.1.0"
+description = "Codebase for developing the scienceQA_chatbot."
+authors = [
+    {name = "David",email = "daavidliu@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.13"
+dependencies = [
+    "openai (>=1.68.2,<2.0.0)",
+    "datasets (>=3.4.1,<4.0.0)",
+    "tqdm (>=4.67.1,<5.0.0)",
+    "numpy (>=2.2.4,<3.0.0)",
+    "dotenv (>=0.9.9,<0.10.0)",
+    "pandas (>=2.2.3,<3.0.0)",
+    "matplotlib (>=3.10.1,<4.0.0)",
+    "huggingface-hub (>=0.29.3,<0.30.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
