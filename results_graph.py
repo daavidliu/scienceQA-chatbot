@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the results.json file into a variable named data
-with open('results_full.json', 'r') as f:
+with open('results/results_FULL.json', 'r') as f:
     data = json.load(f)
 
 # Prepare data for analysis
@@ -11,23 +11,17 @@ entries = []
 
 total_entries = 0
 
-# Helper function to parse the entries for analysis
-def parse_entries(correct_list, is_correct):
-    for item in correct_list:
-        global total_entries 
-        total_entries += 1
-        entries.append({
-            "correctness": 1 if is_correct else 0,
-            "confidence": item["GPT_response"]["confidence"],
-            "grade": item["grade"],
-            "has_image": item["has_image"],
-            "subject": item["subject"],  # Include subject
-            "topic": item["topic"],  # Include topic
-        })
-
-# Parse the correct and incorrect lists
-parse_entries(data["correct"], True)
-parse_entries(data["incorrect"], False)
+# Parse the entries for analysis
+for item in data:
+    total_entries += 1
+    entries.append({
+        "correctness": 1 if item["correct"] else 0,  # Convert boolean to 1 (correct) or 0 (incorrect)
+        "confidence": item["GPT_response"]["confidence"],
+        "grade": item["grade"],
+        "has_image": item["has_image"],
+        "subject": item["subject"],  # Include subject
+        "topic": item["topic"],  # Include topic
+    })
 
 print(f"Total entries: {total_entries}")
 

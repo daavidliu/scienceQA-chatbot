@@ -5,10 +5,9 @@ import json
 import threading
 import time
 import sys
-from datasets import load_dataset, Dataset
 from tqdm import tqdm
 import os
-from dataset_functions import dataset_from_disk
+from dataset_functions import dataset_from_disk, download_dataset
 
 from PIL import Image
 import base64
@@ -19,14 +18,13 @@ import numpy as np
 
 from dotenv import load_dotenv
 
+import pyfiglet
+
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 # Load the dataset
 arrow_file_path="science_qa/test/data-00000-of-00001.arrow"
-
-test_data = dataset_from_disk(arrow_file_path, 5)
-
 client = OpenAI(api_key=OPENAI_API_KEY)
 
 model_name = "gpt-4o-mini"
@@ -56,10 +54,6 @@ def get_completion(
 
     completion = client.chat.completions.create(**params)
     return completion
-
-# Evaluate GPT-4o mini on the test set
-correct = 0
-total = 0
 
 def clean_text(text):
     # clean text by removing markdown formatting
@@ -104,7 +98,6 @@ def GPT_send(prompt, base64_image=None, image_format=None):
     top_logprobs = response.choices[0].logprobs.content[0].top_logprobs
     logprob = top_logprobs[0].logprob
     confidence = np.round(np.exp(logprob)*100,2)
-    print(f"Confidence: {confidence}%")
     
     return {
         "answer": answer,
@@ -120,43 +113,42 @@ def loading_animation():
         idx += 1
         time.sleep(0.1)
 
-results = {
-    "correct": [
-
-    ],
-    "incorrect": [
-
-    ]
-}
+results = []
 
 if __name__ == "__main__":
-    print("this is main.py...")
-    # while True:
-    #     user_input = input("\nEnter your prompt: ")
-        
-    #     stop_loading = False
-    #     loading_thread = threading.Thread(target=loading_animation)
-    #     loading_thread.start()
-        
-    #     result = process_text(user_input)
-    
-        
-    #     print(f"\n{model_name}:", result)
 
-    # stop_loading = False
-    # loading_thread = threading.Thread(target=loading_animation)
-    # loading_thread.start()
+    # get user input a number store it in a variable called entries
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--entries", type=int, default=5)
+    args = parser.parse_args()
+    entries = args.entries
+
+    # Use pyfiglet to create styled text
+    ascii_banner = pyfiglet.figlet_format("test.py")
+    print(ascii_banner)
+
+    try :
+        test_data = dataset_from_disk(arrow_file_path, entries)
+    except Exception as e:
+        print(f"Error loading dataset: {e}")
+        try:
+            download_dataset()
+            test_data = dataset_from_disk(arrow_file_path, entries)
+        except Exception as e:
+            print(f"Error downloading dataset: {e}")
+            print("Exiting...")
+            sys.exit(1)
+
+    # Evaluate an LLM on the ScienceQA dataset
+    correct = 0
+    total = 0
 
     for sample in tqdm(test_data):
+        sample["index"] = total # store the index of the sample, so it's easier to find later
         prompt = science_QA_prompt(
             question=sample["question"],
             choices=sample["choices"],
             hint=sample["hint"],
-            grade=sample["grade"],
-            subject=sample["subject"],
-            topic=sample["topic"],
-            category=sample["category"],
-            skill=sample["skill"]
         )
 
         image = sample["image"]
@@ -181,26 +173,25 @@ if __name__ == "__main__":
 
         # Ensure both are strings before comparison
         if str(GPT_response["answer"]) == str(sample["answer"]):
-            print("Correct!")
             correct += 1
-            results["correct"].append(sample_copy)
+            sample_copy["correct"] = True
+            feedback = "Correct!  "
         else :
-            # print(f"Incorrect!\nPredicted: {GPT_response["answer"]}\nActual: ", sample["answer"])
-            print("Incorrect!")
-            results["incorrect"].append(sample_copy)
+            sample_copy["correct"] = False
+            feedback = "Incorrect!"
 
+        tqdm.write(f"{total}: {feedback} Confidence: {GPT_response["confidence"]}%")
+
+        results.append(sample_copy)
         total += 1
-
-    # stop_loading = True
-    # loading_thread.join()
 
     print(f"Accuracy: {correct / total * 100:.2f}%")
 
-    # save results to file
-    with open("results_full.json", "w") as f:
-        json.dump(results, f, indent=4)
+    # get current date and time as string in the format "MM-DD-HH-MM"
+    now = time.strftime("%m-%d-%H-%M")
 
-    # actual_answer = str(sample["answer"])  # Convert to string for comparison
-    # if predicted_answer == actual_answer:
-    #     correct += 1
-    # total += 1
+    # save results to file
+    filename = f"results/results_{now}.json"
+    with open(filename, "w") as f:
+        json.dump(results, f, indent=4)
+    print(f"Results saved to {filename}")

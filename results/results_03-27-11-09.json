@@ -1,0 +1,130 @@
+[
+    {
+        "question": "Which figure of speech is used in this text?\nSing, O goddess, the anger of Achilles son of Peleus, that brought countless ills upon the Achaeans.\n\u2014Homer, The Iliad",
+        "choices": [
+            "chiasmus",
+            "apostrophe"
+        ],
+        "answer": 1,
+        "hint": "",
+        "task": "closed choice",
+        "grade": "grade11",
+        "subject": "language science",
+        "topic": "figurative-language",
+        "category": "Literary devices",
+        "skill": "Classify the figure of speech: anaphora, antithesis, apostrophe, assonance, chiasmus, understatement",
+        "lecture": "Figures of speech are words or phrases that use language in a nonliteral or unusual way. They can make writing more expressive.\nAnaphora is the repetition of the same word or words at the beginning of several phrases or clauses.\nWe are united. We are powerful. We are winners.\nAntithesis involves contrasting opposing ideas within a parallel grammatical structure.\nI want to help, not to hurt.\nApostrophe is a direct address to an absent person or a nonhuman entity.\nOh, little bird, what makes you sing so beautifully?\nAssonance is the repetition of a vowel sound in a series of nearby words.\nTry to light the fire.\nChiasmus is an expression in which the second half parallels the first but reverses the order of words.\nNever let a fool kiss you or a kiss fool you.\nUnderstatement involves deliberately representing something as less serious or important than it really is.\nAs you know, it can get a little cold in the Antarctic.",
+        "solution": "The text uses apostrophe, a direct address to an absent person or a nonhuman entity.\nO goddess is a direct address to a goddess, a nonhuman entity.",
+        "index": 0,
+        "has_image": false,
+        "GPT_response": {
+            "answer": "1",
+            "confidence": 100.0,
+            "logprob": 0.0
+        },
+        "correct": true
+    },
+    {
+        "question": "Which of the following could Gordon's test show?",
+        "choices": [
+            "if the spacecraft was damaged when using a parachute with a 1 m vent going 200 km per hour",
+            "how steady a parachute with a 1 m vent was at 200 km per hour",
+            "whether a parachute with a 1 m vent would swing too much at 400 km per hour"
+        ],
+        "answer": 1,
+        "hint": "People can use the engineering-design process to develop solutions to problems. One step in the process is testing if a potential solution meets the requirements of the design.\nThe passage below describes how the engineering-design process was used to test a solution to a problem. Read the passage. Then answer the question below.\n\nGordon was an aerospace engineer who was developing a parachute for a spacecraft that would land on Mars. He needed to add a vent at the center of the parachute so the spacecraft would land smoothly. However, the spacecraft would have to travel at a high speed before landing. If the vent was too big or too small, the parachute might swing wildly at this speed. The movement could damage the spacecraft.\nSo, to help decide how big the vent should be, Gordon put a parachute with a 1 m vent in a wind tunnel. The wind tunnel made it seem like the parachute was moving at 200 km per hour. He observed the parachute to see how much it swung.\nFigure: a spacecraft's parachute in a wind tunnel.",
+        "task": "closed choice",
+        "grade": "grade8",
+        "subject": "natural science",
+        "topic": "science-and-engineering-practices",
+        "category": "Engineering practices",
+        "skill": "Evaluate tests of engineering-design solutions",
+        "lecture": "People can use the engineering-design process to develop solutions to problems. One step in the process is testing if a potential solution meets the requirements of the design. How can you determine what a test can show? You need to figure out what was tested and what was measured.\nImagine an engineer needs to design a bridge for a windy location. She wants to make sure the bridge will not move too much in high wind. So, she builds a smaller prototype, or model, of a bridge. Then, she exposes the prototype to high winds and measures how much the bridge moves.\nFirst, identify what was tested. A test can examine one design, or it may compare multiple prototypes to each other. In the test described above, the engineer tested a prototype of a bridge in high wind.\nThen, identify what the test measured. One of the criteria for the bridge was that it not move too much in high winds. The test measured how much the prototype bridge moved.\nTests can show how well one or more designs meet the criteria. The test described above can show whether the bridge would move too much in high winds.",
+        "solution": "",
+        "index": 1,
+        "has_image": true,
+        "GPT_response": {
+            "answer": "1",
+            "confidence": 100.0,
+            "logprob": 0.0
+        },
+        "correct": true
+    },
+    {
+        "question": "What is the name of the colony shown?",
+        "choices": [
+            "Maryland",
+            "New Hampshire",
+            "Rhode Island",
+            "Vermont"
+        ],
+        "answer": 1,
+        "hint": "",
+        "task": "closed choice",
+        "grade": "grade5",
+        "subject": "social science",
+        "topic": "us-history",
+        "category": "English colonies in North America",
+        "skill": "Identify the Thirteen Colonies",
+        "lecture": "",
+        "solution": "The colony is New Hampshire.\nDuring the colonial era, New Hampshire and New York both claimed the territory that would later become the state of Vermont. Vermont was never its own colony.",
+        "index": 2,
+        "has_image": true,
+        "GPT_response": {
+            "answer": "1",
+            "confidence": 100.0,
+            "logprob": 0.0
+        },
+        "correct": true
+    },
+    {
+        "question": "Would you find the word dozen on a dictionary page with the following guide words?\ndaddy - definition",
+        "choices": [
+            "no",
+            "yes"
+        ],
+        "answer": 0,
+        "hint": "",
+        "task": "yes or no",
+        "grade": "grade7",
+        "subject": "language science",
+        "topic": "reference-skills",
+        "category": "Reference skills",
+        "skill": "Use guide words",
+        "lecture": "Guide words appear on each page of a dictionary. They tell you the first word and last word on the page. The other words on the page come between the guide words in alphabetical order.\nTo put words in alphabetical order, put them in order by their first letters. If the first letters are the same, look at the second letters. If the second letters are the same, look at the third letters, and so on.\nIf one word is shorter, and there are no more letters to compare, then the shorter word comes first in alphabetical order. For example, be comes before bed.",
+        "solution": "Put the words in alphabetical order.\nSince dozen is not between the guide words daddy - definition, it would not be found on that page.",
+        "index": 3,
+        "has_image": false,
+        "GPT_response": {
+            "answer": "1",
+            "confidence": 100.0,
+            "logprob": -9.014684110297821e-06
+        },
+        "correct": false
+    },
+    {
+        "question": "Which word would you find on a dictionary page with the following guide words?\nshot - suit",
+        "choices": [
+            "service",
+            "stockade"
+        ],
+        "answer": 1,
+        "hint": "",
+        "task": "closed choice",
+        "grade": "grade8",
+        "subject": "language science",
+        "topic": "reference-skills",
+        "category": "Reference skills",
+        "skill": "Use guide words",
+        "lecture": "Guide words appear on each page of a dictionary. They tell you the first word and last word on the page. The other words on the page come between the guide words in alphabetical order.\nTo put words in alphabetical order, put them in order by their first letters. If the first letters are the same, look at the second letters. If the second letters are the same, look at the third letters, and so on.\nIf one word is shorter, and there are no more letters to compare, then the shorter word comes first in alphabetical order. For example, be comes before bed.",
+        "solution": "Put the words in alphabetical order.\nSince stockade is between the guide words shot - suit, it would be found on that page.",
+        "index": 4,
+        "has_image": false,
+        "GPT_response": {
+            "answer": "0",
+            "confidence": 99.98,
+            "logprob": -0.00020354038861114532
+        },
+        "correct": false
+    }
+]

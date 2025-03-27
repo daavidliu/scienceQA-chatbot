@@ -22,7 +22,7 @@ def loading_animation():
 
 # Download the dataset from Hugging Face
 def download_dataset(dataset_name="derek-thomas/ScienceQA"):
-    print("Downloading dataset...")
+    print("Attempting to download dataset...")
     global stop_loading 
     stop_loading = False
     loading_thread = threading.Thread(target=loading_animation)

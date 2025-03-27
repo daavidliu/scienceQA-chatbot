@@ -15,7 +15,8 @@ dependencies = [
     "dotenv (>=0.9.9,<0.10.0)",
     "pandas (>=2.2.3,<3.0.0)",
     "matplotlib (>=3.10.1,<4.0.0)",
-    "huggingface-hub (>=0.29.3,<0.30.0)"
+    "huggingface-hub (>=0.29.3,<0.30.0)",
+    "pyfiglet (>=1.0.2,<2.0.0)"
 ]
 
 

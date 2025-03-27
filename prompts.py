@@ -4,18 +4,13 @@ SYSTEM_ROLE = """
 """
 
 # Function to send prompt to GPT-4o mini
-def science_QA_prompt(question, choices, hint, grade, subject, topic, category, skill):
+def science_QA_prompt(question, choices, hint):
     return f"""
     You are a AI answering a multiple-choice science question. Below is the question:
 
-    **Grade:** {grade}
-    **Subject:** {subject}
-    **Topic:** {topic}
-    **Category:** {category}
-    **Skill:** {skill}
-    **Hint:** {hint}
-
+    **Context:** {hint}
     **Question:** {question}
+    
     **Choices:**
 
     {chr(10).join([f"{i}. {choice}" for i, choice in enumerate(choices)])}
