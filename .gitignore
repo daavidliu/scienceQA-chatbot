@@ -12,3 +12,4 @@ __pycache__/
 
 # folder for the science_qa data (too big to be stored in the repo)
 science_qa/
+models/

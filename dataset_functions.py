@@ -53,7 +53,25 @@ def dataset_from_disk(arrow_file_path="science_qa/test/data-00000-of-00001.arrow
         return dataset
     else:
         return dataset.select(range(rows))
+    
+# Load the dataset from local files
+def dataset_from_disk_specific_indexes(arrow_file_path="science_qa/test/data-00000-of-00001.arrow", indexes=[]):
+    # Load the dataset from local files
+    # Path to the Arrow file
+    # Get file size in MB
+    
+    file_size = os.path.getsize(arrow_file_path) / (1024 * 1024)
+    print(f"Dataset size: {file_size:.2f} MB")
+    # Load the dataset from Arrow format
+    dataset = Dataset.from_file(arrow_file_path)
+    print("Dataset loaded successfully")
 
+    selected = []
+
+    for i in indexes:
+        selected.append(dataset[i])
+    print(f"Selected {len(selected)} items from the dataset")
+    return selected
 
 if __name__ == "__main__":
     download_dataset()

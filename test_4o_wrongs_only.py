@@ -7,7 +7,7 @@ import time
 import sys
 from tqdm import tqdm
 import os
-from dataset_functions import dataset_from_disk, download_dataset
+from dataset_functions import dataset_from_disk, download_dataset, dataset_from_disk_specific_indexes
 
 from PIL import Image
 import base64
@@ -27,13 +27,17 @@ OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 arrow_file_path="science_qa/test/data-00000-of-00001.arrow"
 client = OpenAI(api_key=OPENAI_API_KEY)
 
-model_name = "gpt-4o"
+model_name = "gpt-4o-mini"
+
+# load json file
+with open("science_qa/test/4o_wrong_indexes.json", "r") as file:
+    wrong_indexes = json.load(file)
 
 
 def get_completion(
     messages: list[dict[str, str]],
-    model: str = "gpt-4o",
-    max_tokens=500,
+    model: str = "gpt-4o-mini",
+    max_tokens=1,
     temperature=0,
     seed=123,
     tools=None,
@@ -128,16 +132,20 @@ if __name__ == "__main__":
     print(ascii_banner)
 
     try :
-        test_data = dataset_from_disk(arrow_file_path, entries)
+        test_data = dataset_from_disk_specific_indexes(arrow_file_path, wrong_indexes)
     except Exception as e:
         print(f"Error loading dataset: {e}")
         try:
             download_dataset()
-            test_data = dataset_from_disk(arrow_file_path, entries)
+            test_data = dataset_from_disk_specific_indexes(arrow_file_path, wrong_indexes)
         except Exception as e:
             print(f"Error downloading dataset: {e}")
             print("Exiting...")
             sys.exit(1)
+
+    # use only the first few entries of the dataset
+
+    test_data = test_data[:entries]
 
     # Evaluate an LLM on the ScienceQA dataset
     correct = 0
@@ -185,13 +193,16 @@ if __name__ == "__main__":
         results.append(sample_copy)
         total += 1
 
+        # Add a wait timer to respect the API rate limit
+        time.sleep(1)  # Adjust the sleep time (in seconds) based on the API's rate limit
+
     print(f"Accuracy: {correct / total * 100:.2f}%")
 
     # get current date and time as string in the format "MM-DD-HH-MM"
     now = time.strftime("%m-%d-%H-%M")
 
     # save results to file
-    filename = f"results/results_{now}.json"
+    filename = f"results/results_4omini_{now}.json"
     with open(filename, "w") as f:
         json.dump(results, f, indent=4)
     print(f"Results saved to {filename}")

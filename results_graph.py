@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 
 # Load the results.json file into a variable named data
-with open('results/results_FULL.json', 'r') as f:
+with open('results/results_4o_wrong.json', 'r') as f:
     data = json.load(f)
 
 # Prepare data for analysis
@@ -123,6 +123,18 @@ plt.bar(image_correctness["has_image"], image_correctness["correctness"], color=
 plt.title("Relationship: Image Presence vs Correctness", fontsize=16)
 plt.xlabel("Has Image", fontsize=12)
 plt.ylabel("Average Correctness", fontsize=12)
+plt.grid(axis="y")
+plt.show()
+
+
+# plot 5: correct answers vs incorrect answers
+plt.figure(figsize=(8, 5))
+correct_count = df["correctness"].sum()
+incorrect_count = len(df) - correct_count
+plt.bar(["Correct", "Incorrect"], [correct_count, incorrect_count], color=["green", "red"])
+plt.title("Correct vs Incorrect Answers", fontsize=16)
+plt.xlabel("Answer Type", fontsize=12)
+plt.ylabel("Count", fontsize=12)
 plt.grid(axis="y")
 plt.show()
 

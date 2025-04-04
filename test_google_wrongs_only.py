@@ -7,7 +7,7 @@ import time
 import sys
 from tqdm import tqdm
 import os
-from dataset_functions import dataset_from_disk, download_dataset
+from dataset_functions import dataset_from_disk, download_dataset, dataset_from_disk_specific_indexes
 
 from PIL import Image
 import base64
@@ -20,14 +20,56 @@ from dotenv import load_dotenv
 
 import pyfiglet
 
+from google import genai
+from google.genai import types
+
+# load json file
+with open("science_qa/test/4o_wrong_indexes.json", "r") as file:
+    wrong_indexes = json.load(file)
+
 load_dotenv()
 OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
+GOOGLE_API_KEY = os.getenv("GOOGLE_API_KEY")
+
+client = genai.Client(
+    api_key=GOOGLE_API_KEY
+)
+
 # Load the dataset
 arrow_file_path="science_qa/test/data-00000-of-00001.arrow"
-client = OpenAI(api_key=OPENAI_API_KEY)
+# client = OpenAI(api_key=OPENAI_API_KEY)
 
 model_name = "gpt-4o"
+
+
+
+model_name = "gemini-1.5-flash-8b" # Or another suitable model like gemini-2.0-flash-001
+
+def gemini_send(prompt: str, base64_image: str = None, image_format: str = None):
+    messages = [prompt]
+    if base64_image and image_format:
+        messages.append(
+            types.Part.from_bytes(data=base64_image, mime_type=f"image/{image_format}")
+        )
+    config=types.GenerateContentConfig(
+        temperature=0,
+        candidate_count=1,
+        seed=5,
+        max_output_tokens=1,
+        system_instruction=SYSTEM_ROLE
+    )
+    response = client.models.generate_content(
+        model="gemini-2.0-flash",
+        contents=messages,
+        config=config,
+    )
+    print(response.text)
+    return {
+        "answer": clean_text(response.text),
+        "confidence": "n/a",
+        "logprob": "n/a",
+    }
 
 
 def get_completion(
@@ -56,8 +98,8 @@ def get_completion(
     return completion
 
 def clean_text(text):
-    # clean text by removing markdown formatting
-    return text.strip("```json").strip("```").strip()
+    # clean text by removing markdown formatting and newline characters
+    return text.strip("```json").strip("```").replace("\n", "").strip()
 
 def GPT_send(prompt, base64_image=None, image_format=None):
     messages = [
@@ -123,21 +165,26 @@ if __name__ == "__main__":
     args = parser.parse_args()
     entries = args.entries
 
+
     # Use pyfiglet to create styled text
-    ascii_banner = pyfiglet.figlet_format("test.py")
+    ascii_banner = pyfiglet.figlet_format("test_google_wrongs_only.py")
     print(ascii_banner)
 
     try :
-        test_data = dataset_from_disk(arrow_file_path, entries)
+        test_data = dataset_from_disk_specific_indexes(arrow_file_path, wrong_indexes)
     except Exception as e:
         print(f"Error loading dataset: {e}")
         try:
             download_dataset()
-            test_data = dataset_from_disk(arrow_file_path, entries)
+            test_data = dataset_from_disk_specific_indexes(arrow_file_path, wrong_indexes)
         except Exception as e:
             print(f"Error downloading dataset: {e}")
             print("Exiting...")
             sys.exit(1)
+
+    # use only the first few entries of the dataset
+
+    test_data = test_data[:entries]
 
     # Evaluate an LLM on the ScienceQA dataset
     correct = 0
@@ -163,8 +210,11 @@ if __name__ == "__main__":
             image_format = None
             sample["has_image"] = False
 
-        GPT_response = GPT_send(prompt, base64_image, image_format)
-        sample["GPT_response"] = GPT_response
+        # GPT_response = GPT_send(prompt, base64_image, image_format)
+        # sample["GPT_response"] = GPT_response
+
+        Gemini_response = gemini_send(prompt, base64_image, image_format)
+        sample["Gemini_response"] = Gemini_response
         
         # Create a copy of the sample without the 'image' field
         sample_copy = sample.copy()
@@ -172,7 +222,7 @@ if __name__ == "__main__":
             del sample_copy['image']
 
         # Ensure both are strings before comparison
-        if str(GPT_response["answer"]) == str(sample["answer"]):
+        if str(Gemini_response["answer"]) == str(sample["answer"]):
             correct += 1
             sample_copy["correct"] = True
             feedback = "Correct!  "
@@ -180,7 +230,7 @@ if __name__ == "__main__":
             sample_copy["correct"] = False
             feedback = "Incorrect!"
 
-        tqdm.write(f"{total}: {feedback} Confidence: {GPT_response["confidence"]}%")
+        # tqdm.write(f"{total}: {feedback} Confidence: {Gemini_response["confidence"]}%")
 
         results.append(sample_copy)
         total += 1
